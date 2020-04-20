@@ -16,6 +16,11 @@ int main(int argc, char **argv)
 	printf("len tst|%d|\n", tst);
 	printf("len ans|%d|\n", ans);
 
+	tst = ft_strlen("");
+	ans = strlen("");
+
+	printf("len tst|%d|\n", tst); //when empty, it counts anyway
+	printf("len ans|%d|\n", ans);
 
 	char dest_tst[50];
 	char dest_ans[50];

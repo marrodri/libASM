@@ -8,12 +8,15 @@ section .text
 
 ft_strlen:
 		mov rbx, 0
+		; mov cl, [rdi]
+		; cmp cl, 0
 _loopcount:
+		mov cl, [rdi]
+		cmp cl, 0
+		je _exit
 		inc rdi
 		inc rbx
-		mov cl,[rdi]
-		cmp cl, 0
 		jne _loopcount
-		
+_exit:
 		mov rax, rbx
 		ret
