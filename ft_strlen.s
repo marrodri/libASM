@@ -16,7 +16,7 @@ _loopcount:
 		je _exit
 		inc rdi
 		inc rbx
-		jne _loopcount
+		jmp _loopcount
 _exit:
 		mov rax, rbx
 		ret

@@ -26,8 +26,8 @@ int main(int argc, char **argv)
 	char dest_ans[50];
 	char *str_tst;
 	char *str_ans;
-	char src_tst[50] = "I AM THE TST, TRY ME!!";
-	char src_ans[50] = "I AM THE ANS, TRY ME!!";
+	char src_tst[50] ;
+	char src_ans[50] ;
 	str_tst = ft_strcpy(dest_tst,src_tst);
 	str_ans = strcpy(dest_ans,src_ans);
 	printf("strcpy tst |%s|\n", str_tst);
