@@ -1,25 +1,16 @@
 
-%include "linux64.inc"
-
-section .data
-		text1 db "iteratin",10,0
-		text2 db "diff",10,0
-		text3 db "ENTER!!",10,0
-		text4 db "finish!!",10,0
-
 section .text
 		global ft_strcmp
 ;rdi is the first param
 ;rsi is the second param
 
 ft_strcmp:
+		push rdi
+		push rsi
 		mov rax, 0
-		; push rdi
-		; push rsi
 		mov r14b, [rdi]
 		cmp r14b, 0
 		je _diff
-		; mov r9, [rdi]
 		mov r15b, [rsi]
 		cmp r15b, 0
 		je _diff
@@ -45,10 +36,16 @@ _diff:
 		jl _less 
 _equal:
 		mov rax, 0
+		pop rsi
+		pop rdi
 		ret
 _less:
 		mov rax, -1
+		pop rsi
+		pop rdi
 		ret
 _great:
 		mov rax, 1
+		pop rsi
+		pop rdi
 		ret

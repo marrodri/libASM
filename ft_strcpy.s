@@ -4,9 +4,9 @@ section .text
 		global ft_strcpy
 
 ft_strcpy:
-		push rdi ;save the dest parameter
-_loopcopy:
-		;just in case:change cl for another reg. 
+		push rsi ;save the first pointer of the src param
+		push rdi ;save the first pointer of the dst param
+_loopcopy: 
 		mov cx,[rsi]
 		mov [rdi], cx
 		cmp cx, 0
@@ -15,5 +15,7 @@ _loopcopy:
 		inc rsi ; src
 		jmp _loopcopy
 _exit:
-		pop rax
+		pop rdi
+		pop rsi
+		mov rax, rdi
 		ret
