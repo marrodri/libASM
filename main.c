@@ -4,7 +4,7 @@
 #include <string.h>
 #include <fcntl.h>
 
-int main(int argc, char **argv)
+int main()
 {
 	int tst;
 	int ans;
@@ -22,6 +22,7 @@ int main(int argc, char **argv)
 	tst = ft_strlen(len_str);
 	ans = strlen(len_str);
 
+	printf("====ft_strlen tests========\n");
 	printf("len tst|%d|\n", tst);
 	printf("len ans|%d|\n", ans);
 	printf("STR:|%s|\n", len_str);
@@ -50,6 +51,7 @@ int main(int argc, char **argv)
 	char *str_tst ;
 	char *str_ans ;
 
+	printf("====ft_strcpy tests========\n");
 	str_tst = ft_strcpy(dest_tst,src_tst);
 	str_ans = strcpy(dest_ans,src_ans);
 
@@ -77,6 +79,7 @@ int main(int argc, char **argv)
 
 /* ft_strcmp test------------------------ */
 
+	printf("====ft_strcmp tests========\n");
 	tst = ft_strcmp("hello world!!!\n","hello world!!!\n");
 	ans = strcmp("hello world!!!\n","hello world!!!\n");
 
@@ -111,6 +114,7 @@ int main(int argc, char **argv)
 	size_t write_ans_out;
 	size_t write_tst_out;
 
+	printf("====ft_write tests========\n");
 	write_ans_out = write(1, "hello_world from sc_write\n", 26);
 	printf("write_ans_out |%ld|\n", write_ans_out);
 
@@ -148,13 +152,12 @@ int main(int argc, char **argv)
 	close(fd_tst);
 
 /*ft_read---------------*/
-	//you have to read from stdin
-	// read();
+
 	int tst_bytes;
 	int ans_bytes;
 	char buff[255];
-	int fd;
-	printf("====ft_strdup tests========\n");
+
+	printf("====ft_read tests========\n");
 	printf("read from normal STDIN with sc_read:\n ");
 	while((ans_bytes = read(0, buff, 255)) > 0)
 	{
@@ -179,7 +182,41 @@ int main(int argc, char **argv)
 	buff[tst_bytes - 1] = '\0';
 	printf("tst_bytes after ft_read |%d|\n", tst_bytes);
 	printf("STDIN from ft_read is |%s|\n", buff);
+	
+	fd_ans = open("read_ans.txt",O_RDONLY);
+	fd_tst = open("read_tst.txt",O_RDONLY);
+	
+	ans_bytes = ft_read(fd_ans, buff, 255);
+	buff[ans_bytes - 1] = '\0';
+	printf("reading files:\n");
+	printf("ans_bytes|%d|\n", ans_bytes);
+	printf("sc_read |%s|\n", buff);
+	
+	tst_bytes = ft_read(fd_tst, buff, 255);
+	buff[tst_bytes - 1] = '\0';
+	printf("tst_bytes|%d|\n", tst_bytes);
+	printf("ft_read |%s|\n", buff);
 
+	close(fd_ans);
+	close(fd_tst);
+	
+	fd_ans = open("read_answ.txt", O_RDWR);
+	fd_tst = open("read_tstw.txt", O_RDWR);
+
+	ans_bytes = ft_read(fd_ans, buff, 255);
+	buff[ans_bytes - 1] = '\0';
+	printf("reading ERROR files:\n");
+	printf("ans_bytes|%d|\n", ans_bytes);
+	printf("sc_read |%s|\n", buff);
+	
+	tst_bytes = ft_read(fd_tst, buff, 255);
+	buff[tst_bytes - 1] = '\0';
+	printf("tst_bytes|%d|\n", tst_bytes);
+	printf("ft_read |%s|\n", buff);
+
+
+	close(fd_ans);
+	close(fd_tst);
 
 /*ft_strdup---------------*/
 
