@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <fcntl.h>
+#include <stdlib.h>
 
 int main()
 {
@@ -231,14 +232,23 @@ int main()
 	printf("strdup empty ans |%s|\n", strdup_ans);
 	strdup_tst = ft_strdup(empty_string);
 	printf("strdup empty tst |%s|\n", strdup_tst);
+	free(strdup_ans);
+	free(strdup_tst);
+
 	strdup_ans = strdup(normal_string);
 	printf("strdup normal ans |%s|\n", strdup_ans);
 	strdup_tst = ft_strdup(normal_string);
 	printf("strdup normal tst |%s|\n", strdup_tst);
+	free(strdup_ans);
+	free(strdup_tst);
+	
+	
 	strdup_ans = strdup(long_string);
 	printf("strdup long ans |%s|\n", long_string);
 	strdup_tst = ft_strdup(normal_string);
 	printf("strdup long tst |%s|\n", long_string);
+	free(strdup_ans);
+	free(strdup_tst);
 	return (0);
 
 }
