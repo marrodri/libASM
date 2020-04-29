@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <fcntl.h>
-#include <errno.h>
+
 int main(int argc, char **argv)
 {
 	int tst;
@@ -11,6 +11,8 @@ int main(int argc, char **argv)
 	extern int ft_strlen(char *str);
 	extern char *ft_strcpy(char *dest, char *src);
 	extern int ft_strcmp(char *str1, char *str2);
+	extern ssize_t ft_write(int fd, const char *buff, size_t nbytes);
+	extern ssize_t ft_read(int fd, const char *buff, size_t nbytes);
 	extern char *ft_strdup(char *str);
 
 
@@ -84,19 +86,19 @@ int main(int argc, char **argv)
 	tst = ft_strcmp("abc","ab");
 	ans = strcmp("abc","ab");
 
-	printf("strcmp tst|%d|\n", tst); //when empty, it counts anyway
+	printf("strcmp tst|%d|\n", tst);
 	printf("strcmp ans|%d|\n", ans);
 	
 	tst = ft_strcmp("abc","abd");
 	ans = strcmp("abc","abd");
 
-	printf("strcmp tst|%d|\n", tst); //when empty, it counts anyway
+	printf("strcmp tst|%d|\n", tst);
 	printf("strcmp ans|%d|\n", ans);
 	
 	tst = ft_strcmp("","");
 	ans = strcmp("","");
 
-	printf("strcmp tst|%d|\n", tst); //when empty, it counts anyway
+	printf("strcmp tst|%d|\n", tst);
 	printf("strcmp ans|%d|\n", ans);
 
 
@@ -105,30 +107,78 @@ int main(int argc, char **argv)
 	int fd_tst;
 	int fd_ans;
 	fd_ans = open("write_ans.txt", O_RDWR);
+	fd_tst = open("write_tst.txt", O_RDWR);
 	size_t write_ans_out;
 	size_t write_tst_out;
 
-	write_ans_out = write(1, "hello_world from syscall\n", 25);
+	write_ans_out = write(1, "hello_world from sc_write\n", 26);
 	printf("write_ans_out |%ld|\n", write_ans_out);
-	printf("errno from ans|%d|\n", errno);
-	write_ans_out = write(fd_ans, "hello_world from syscall\n", 25);
-	printf("write_ans_out |%ld|\n", write_ans_out);
-	printf("errno from ans|%d|\n", errno);
-	
-	/*error handling*/
+
+	write_tst_out = ft_write(1, "hello_world from ft_write\n", 26);
+	printf("write_tst_out |%ld|\n", write_tst_out);
+
+	write_ans_out = write(fd_ans, "hello_world file from sc_write\n", 31);
+	printf("write_tst_out file|%ld|\n", write_ans_out);
+
+	write_tst_out = ft_write(fd_tst, "hello_world file from ft_write\n", 31);
+	printf("write_tst_out file|%ld|\n", write_tst_out);
+
+
+	close(fd_ans);
+	close(fd_tst);
 	
 	fd_ans = open("write_answ.txt", O_RDWR);
-	write_ans_out = write(-1, "hello_world from syscall\n", 25);
-	printf("write_ans_out |%ld|\n", write_ans_out);
-	printf("errno from ans|%d|\n", errno);
-	write_ans_out = write(fd_ans, "hello_world from syscall\n", 25);
-	printf("write_ans_out |%ld|\n", write_ans_out);
-	printf("errno from ans|%d|\n", errno);
-	// printf();
-	// printf();
+	fd_tst = open("write_tstw.txt", O_RDWR);
 
+	write_ans_out = write(fd_ans, "hello_world from syscall\n", 25);
+	printf("write_ans_out no file |%ld|\n", write_ans_out);
+	write_tst_out = ft_write(fd_tst, "hello_world from syscall\n", 25);
+	printf("write_ans_out no file |%ld|\n", write_tst_out);
+
+	write_ans_out = write(-1, "hello_world from syscall\n", 25);
+	printf("write_ans_out error|%ld|\n", write_ans_out);
+	write_tst_out = ft_write(-1, "hello_world from syscall\n", 25);
+	printf("write_tst_out error|%ld|\n", write_tst_out);
+
+	write_ans_out = write(1, "hello_world from syscall\n", 0);
+	printf("write_ans_out nobytes|%ld|\n", write_ans_out);
+	write_tst_out = ft_write(1, "hello_world from syscall\n", 0);
+	printf("write_tst_out nobytes|%ld|\n", write_tst_out);
+	close(fd_ans);
+	close(fd_tst);
 
 /*ft_read---------------*/
+	//you have to read from stdin
+	// read();
+	int tst_bytes;
+	int ans_bytes;
+	char buff[255];
+	int fd;
+	printf("====ft_strdup tests========\n");
+	printf("read from normal STDIN with sc_read:\n ");
+	while((ans_bytes = read(0, buff, 255)) > 0)
+	{
+		if (buff[ans_bytes - 1] == '\n')
+		{
+			break;
+		}
+	}
+	buff[ans_bytes - 1] = '\0';
+
+	printf("ans_bytes after sc_read |%d|\n", ans_bytes);
+	printf("STDIN from read is |%s|\n", buff);
+
+	printf("read from normal STDIN with ft_read:\n ");
+	while((tst_bytes = ft_read(0, buff, 255)) > 0)
+	{
+		if (buff[tst_bytes - 1] == '\n')
+		{
+			break;
+		}
+	}
+	buff[tst_bytes - 1] = '\0';
+	printf("tst_bytes after ft_read |%d|\n", tst_bytes);
+	printf("STDIN from ft_read is |%s|\n", buff);
 
 
 /*ft_strdup---------------*/
@@ -139,19 +189,19 @@ int main(int argc, char **argv)
 	char  normal_string[50] = "hello wolrd!";
 	char  long_string[60] = "HELLO WORLD, TODAY IM THE LONGEST STRING EVAHHHH!!!!!!";
 
+	printf("====ft_strdup tests========\n");
 	strdup_ans = strdup(empty_string);
 	printf("strdup empty ans |%s|\n", strdup_ans);
-	strdup_ans = ft_strdup(empty_string);
+	strdup_tst = ft_strdup(empty_string);
 	printf("strdup empty tst |%s|\n", strdup_tst);
-
-	// strdup_ans = strdup(normal_string);
-	// printf("strdup normal ans |%s|\n", strdup_ans);
-	
+	strdup_ans = strdup(normal_string);
+	printf("strdup normal ans |%s|\n", strdup_ans);
 	strdup_tst = ft_strdup(normal_string);
 	printf("strdup normal tst |%s|\n", strdup_tst);
-	
+	strdup_ans = strdup(long_string);
+	printf("strdup long ans |%s|\n", long_string);
+	strdup_tst = ft_strdup(normal_string);
+	printf("strdup long tst |%s|\n", long_string);
+	return (0);
 
-	//segfault inside my .s file
-
-	return 0;
 }

@@ -1,12 +1,7 @@
-; we can use malloc
-%include "linux64.inc"
-section .data
-		text1 db "EXIT",10
-
 section .text
 		global ft_strdup
 		extern malloc
-		extern ___error
+		extern error
 		extern ft_strlen
 		extern ft_strcpy
 ft_strdup:
@@ -21,10 +16,8 @@ ft_strdup:
 		jle _strdup_error ;jump if the rax is less or equal to 0
 		pop rsi ; pop the string to the rsi reg(the second param of ft_strcpy)
 		call ft_strcpy
-		; print rax
 		ret
-
 _strdup_error:
 		xor rax, rax
-		call ___error
+		call error
 		ret
