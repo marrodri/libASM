@@ -1,7 +1,6 @@
 section .text
 		global ft_strdup
 		extern malloc
-		extern error
 		extern ft_strlen
 		extern ft_strcpy
 ft_strdup:
@@ -19,5 +18,4 @@ ft_strdup:
 		ret
 _strdup_error:
 		xor rax, rax
-		call error
 		ret
