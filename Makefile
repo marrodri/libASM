@@ -33,6 +33,6 @@ fclean: clean
 		$(RM) $(NAME) $(PR_NAME)
 
 test: all
-		gcc $(CFLAGS) main.c libasm.a -o $(PR_NAME)
+		gcc $(CFLAGS) main.c $(NAME) -o $(PR_NAME)
 
 re: fclean all
